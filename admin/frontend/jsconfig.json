@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "ignoreDeprecations": "6.0",
+    "baseUrl": "src",
+    "paths": {
+      "@/app/*": ["app/*"],
+      "@/api/*": ["api/*"],
+      "@/UI/*": ["UI/*"],
+      "@/shared/*": ["shared/*"],
+      "@/routes/*": ["routes/*"],
+      "@/layouts/*": ["layouts/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}

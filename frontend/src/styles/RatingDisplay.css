@@ -1,0 +1,115 @@
+/* Rating Display - Basic Alignment Only */
+.rating-display {
+  padding: 12px;
+}
+
+.rating-display.compact {
+  padding: 8px;
+}
+
+.rating-compact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.rating-compact .stars {
+  display: flex;
+  font-size: 15px;
+}
+
+.rating-compact .star {
+  margin: 0 1px;
+}
+
+.rating-compact .value {
+  min-width: 40px;
+}
+
+.rating-compact .count {
+  font-size: 12px;
+}
+
+.rating-detailed {
+  padding: 15px;
+}
+
+.rating-header {
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+}
+
+.rating-header h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.rating-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.rating-stars {
+  display: flex;
+  font-size: 24px;
+  gap: 2px;
+  min-width: 140px;
+}
+
+
+
+.rating-stats {
+  flex: 1;
+}
+
+.rating-stats p {
+  margin: 6px 0;
+  font-size: 13px;
+}
+
+.rating-stats .average {
+  font-size: 15px;
+  margin: 8px 0;
+}
+
+.rating-stats .average strong {
+  font-size: 18px;
+}
+
+.rating-stats .based-on {
+  font-size: 12px;
+}
+
+.recent-feedback {
+  margin-top: 12px;
+  padding-top: 12px;
+}
+
+.recent-feedback h5 {
+  margin: 0 0 10px 0;
+  font-size: 12px;
+}
+
+.recent-feedback ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.recent-feedback li {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 6px;
+  padding: 6px;
+  font-size: 12px;
+}
+
+.recent-feedback .rating-value {
+  min-width: 35px;
+}
+
+.recent-feedback .comment {
+  flex: 1;
+}

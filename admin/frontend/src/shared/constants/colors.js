@@ -1,0 +1,17 @@
+export const COLORS = {
+  bright: '#64ff43',
+  deep: '#124d05',
+  deeper: '#0a1f03',
+  darker: '#0a2e03',
+  surface: '#0d3806',
+  border: 'rgba(100,255,67,0.18)',
+  borderHover: 'rgba(100,255,67,0.45)',
+  text: '#e6ffe0',
+  textMid: 'rgba(230,255,224,0.55)',
+  textLow: 'rgba(230,255,224,0.3)',
+  glow: 'rgba(100,255,67,0.22)',
+  glowStrong: 'rgba(100,255,67,0.45)',
+  error: '#ff6b6b',
+  errorBg: 'rgba(255,107,107,0.1)',
+  errorBorder: 'rgba(255,107,107,0.3)',
+};

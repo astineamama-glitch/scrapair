@@ -1,0 +1,79 @@
+/* Feedback Form - Basic Alignment Only */
+.feedback-form-container {
+  padding: 15px;
+  margin: 15px 0;
+}
+
+.feedback-form-container h3 {
+  margin: 0 0 15px 0;
+}
+
+.rating-selector {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.rating-selector .star {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 0;
+  width: 35px;
+  height: 35px;
+}
+
+
+
+.feedback-form-container textarea {
+  width: 100%;
+  padding: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.feedback-form-container .form-group {
+  margin-bottom: 12px;
+}
+
+.feedback-form-container label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.feedback-form-container small {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+}
+
+.feedback-form-container .alert {
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+
+
+.btn {
+  padding: 8px 15px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+}
+
+
+
+.form-control {
+  width: 100%;
+  padding: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  box-sizing: border-box;
+}

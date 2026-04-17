@@ -1,0 +1,1 @@
+export { ratingsAPI } from './ratingsApi';
