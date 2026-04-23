@@ -9,22 +9,22 @@ export const usersAPI = {
       page: page.toString(),
       limit: limit.toString()
     });
-    const response = await apiClient.get(`/admin/users?${params}`);
+    const response = await apiClient.get(`/api/admin/users?${params}`);
     return response.data;
   },
 
   getById: async (id) => {
-    const response = await apiClient.get(`/admin/users/${id}`);
+    const response = await apiClient.get(`/api/admin/users/${id}`);
     return response.data;
   },
 
   verify: async (id, isVerified) => {
-    const response = await apiClient.put(`/admin/users/${id}/verify`, { isVerified });
+    const response = await apiClient.put(`/api/admin/users/${id}/verify`, { isVerified });
     return response.data;
   },
 
   delete: async (id) => {
-    const response = await apiClient.delete(`/admin/users/${id}`);
+    const response = await apiClient.delete(`/api/admin/users/${id}`);
     return response.data;
   }
 };

@@ -16,10 +16,10 @@ interface WastePostAttributes {
   address: string;
   price?: number;
   images?: string[];
-  status?: 'draft' | 'active' | 'in-collection' | 'collected';
+  status?: 'draft' | 'active' | 'reserved' | 'collected';
   visibility?: 'private' | 'public';
   availabilityCount?: number;
-  collectionStatus?: 'ACTIVE' | 'RESERVED' | 'PICKED_UP' | 'COMPLETED';
+  collectionStatus?: 'ACTIVE' | 'APPROVED' | 'PICKED_UP' | 'COMPLETED';
   approvedRecyclerId?: number | null;
   pickupDeadline?: Date | null;
   pickedUpAt?: Date | null;
@@ -115,9 +115,9 @@ module.exports = (sequelize: Sequelize): ModelStatic<WastePostInstance> => {
         comment: 'Array of image URLs'
       },
       status: {
-        type: DataTypes.ENUM('draft', 'active', 'in-collection', 'collected'),
+        type: DataTypes.ENUM('draft', 'active', 'reserved', 'collected'),
         defaultValue: 'active',
-        comment: 'Current status of the waste post (draft -> active -> in-collection -> collected)'
+        comment: 'Current status of the waste post (draft -> active -> reserved -> collected)'
       },
       visibility: {
         type: DataTypes.ENUM('private', 'public'),
@@ -130,9 +130,9 @@ module.exports = (sequelize: Sequelize): ModelStatic<WastePostInstance> => {
         comment: 'Number of items available for collection'
       },
       collectionStatus: {
-        type: DataTypes.ENUM('ACTIVE', 'RESERVED', 'PICKED_UP', 'COMPLETED'),
+        type: DataTypes.ENUM('ACTIVE', 'APPROVED', 'PICKED_UP', 'COMPLETED'),
         defaultValue: 'ACTIVE',
-        comment: 'Collection workflow status: ACTIVE -> RESERVED -> PICKED_UP -> COMPLETED'
+        comment: 'Collection workflow status: ACTIVE -> APPROVED -> PICKED_UP -> COMPLETED'
       },
       approvedRecyclerId: {
         type: DataTypes.INTEGER,

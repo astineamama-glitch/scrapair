@@ -5,6 +5,7 @@
  */
 
 import React, { useState } from 'react';
+import RatingDisplay from '../../../components/RatingDisplay';
 import { COLORS, TRANSITIONS } from '../../../shared/styles/colors';
 import StatusBadge from '../../../shared/components/StatusBadge';
 
@@ -54,16 +55,19 @@ const ApprovedCollectionCard = ({
         }}
       >
         <div>
-          <h3
-            style={{
-              fontSize: 18,
-              fontWeight: 700,
-              color: COLORS.text,
-              margin: 0,
-            }}
-          >
-            {collection.businessName}
-          </h3>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+            <RatingDisplay userId={collection.businessId} variant="inline" />
+            <h3
+              style={{
+                fontSize: 18,
+                fontWeight: 700,
+                color: COLORS.text,
+                margin: 0,
+              }}
+            >
+              {collection.businessName}
+            </h3>
+          </div>
           <p
             style={{
               fontSize: 12,

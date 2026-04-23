@@ -8,6 +8,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleIcon from '@mui/icons-material/People';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import WarningIcon from '@mui/icons-material/Warning';
+import ReviewsIcon from '@mui/icons-material/Reviews';
 import HistoryIcon from '@mui/icons-material/History';
 import CategoryIcon from '@mui/icons-material/Category';
 import { COLORS } from '../constants/colors';
@@ -33,6 +34,7 @@ const AdminNavigation = () => {
     { label: 'Users', path: '/admin/users', icon: PeopleIcon },
     { label: 'Ratings', path: '/admin/ratings', icon: RateReviewIcon },
     { label: 'Reports', path: '/admin/reports', icon: WarningIcon },
+    { label: 'Feedback', path: '/admin/feedback', icon: ReviewsIcon },
     { label: 'Categories', path: '/admin/categories', icon: CategoryIcon },
     { label: 'System Logs', path: '/admin/logs', icon: HistoryIcon }
   ];

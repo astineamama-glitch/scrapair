@@ -358,52 +358,68 @@ const MyPostsPage = () => {
 
                     <button
                       onClick={() => handleEdit(post.id)}
+                      disabled={post.status === 'collected' || ['PICKED_UP', 'COMPLETED'].includes(post.collectionStatus)}
+                      title={post.status === 'collected' || ['PICKED_UP', 'COMPLETED'].includes(post.collectionStatus) ? 'This post has been collected and cannot be edited' : ''}
                       style={{
                         padding: '12px 16px',
                         fontSize: 13,
                         fontWeight: 700,
                         borderRadius: 100,
                         border: `1px solid ${C.border}`,
-                        background: 'rgba(100,255,67,0.08)',
-                        color: C.bright,
-                        cursor: 'pointer',
+                        background: post.status === 'collected' || ['PICKED_UP', 'COMPLETED'].includes(post.collectionStatus) ? 'rgba(100,100,100,0.08)' : 'rgba(100,255,67,0.08)',
+                        color: post.status === 'collected' || ['PICKED_UP', 'COMPLETED'].includes(post.collectionStatus) ? C.textLow : C.bright,
+                        cursor: post.status === 'collected' || ['PICKED_UP', 'COMPLETED'].includes(post.collectionStatus) ? 'not-allowed' : 'pointer',
                         transition: 'all 0.2s',
+                        opacity: post.status === 'collected' || ['PICKED_UP', 'COMPLETED'].includes(post.collectionStatus) ? 0.6 : 1,
                       }}
-                      onMouseEnter={e => { e.target.style.borderColor = C.borderHover; e.target.style.background = 'rgba(100,255,67,0.15)'; }}
-                      onMouseLeave={e => { e.target.style.borderColor = C.border; e.target.style.background = 'rgba(100,255,67,0.08)'; }}
+                      onMouseEnter={e => {
+                        if (!(post.status === 'collected' || ['PICKED_UP', 'COMPLETED'].includes(post.collectionStatus))) {
+                          e.target.style.borderColor = C.borderHover;
+                          e.target.style.background = 'rgba(100,255,67,0.15)';
+                        }
+                      }}
+                      onMouseLeave={e => {
+                        if (!(post.status === 'collected' || ['PICKED_UP', 'COMPLETED'].includes(post.collectionStatus))) {
+                          e.target.style.borderColor = C.border;
+                          e.target.style.background = 'rgba(100,255,67,0.08)';
+                        }
+                      }}
                     >
                       ✎ Edit
                     </button>
 
                     <button
                       onClick={() => handleDelete(post.id)}
-                      disabled={deletingId === post.id}
+                      disabled={deletingId === post.id || post.status === 'collected' || ['PICKED_UP', 'COMPLETED'].includes(post.collectionStatus)}
+                      title={post.status === 'collected' || ['PICKED_UP', 'COMPLETED'].includes(post.collectionStatus) ? 'This post has been collected and cannot be deleted' : ''}
                       style={{
                         padding: '12px 16px',
                         fontSize: 13,
                         fontWeight: 700,
                         borderRadius: 100,
                         border: 'none',
-                        background: `linear-gradient(135deg, rgba(255,107,107,0.8), rgba(255,80,80,0.8))`,
+                        background: post.status === 'collected' || ['PICKED_UP', 'COMPLETED'].includes(post.collectionStatus) ? 'rgba(100,100,100,0.2)' : `linear-gradient(135deg, rgba(255,107,107,0.8), rgba(255,80,80,0.8))`,
                         color: '#fff',
-                        cursor: deletingId === post.id ? 'not-allowed' : 'pointer',
+                        cursor: deletingId === post.id || post.status === 'collected' || ['PICKED_UP', 'COMPLETED'].includes(post.collectionStatus) ? 'not-allowed' : 'pointer',
                         transition: 'all 0.2s',
                         gridColumn: '1 / -1',
-                        opacity: deletingId === post.id ? 0.6 : 1,
-                        boxShadow: '0 0 12px rgba(255,107,107,0.25)',
+                        opacity: deletingId === post.id || post.status === 'collected' || ['PICKED_UP', 'COMPLETED'].includes(post.collectionStatus) ? 0.6 : 1,
+                        boxShadow: post.status === 'collected' || ['PICKED_UP', 'COMPLETED'].includes(post.collectionStatus) ? 'none' : '0 0 12px rgba(255,107,107,0.25)',
                       }}
                       onMouseEnter={e => {
-                        if (deletingId !== post.id) {
+                        if (!(deletingId === post.id || post.status === 'collected' || ['PICKED_UP', 'COMPLETED'].includes(post.collectionStatus))) {
                           e.target.style.boxShadow = '0 0 20px rgba(255,107,107,0.4)';
                           e.target.style.transform = 'translateY(-1px)';
                         }
                       }}
                       onMouseLeave={e => {
-                        e.target.style.boxShadow = '0 0 12px rgba(255,107,107,0.25)';
-                        e.target.style.transform = 'translateY(0)';
+                        if (!(deletingId === post.id || post.status === 'collected' || ['PICKED_UP', 'COMPLETED'].includes(post.collectionStatus))) {
+                          e.target.style.boxShadow = '0 0 12px rgba(255,107,107,0.25)';
+                          e.target.style.transform = 'translateY(0)';
+                        }
                       }}
                     >
-                      {deletingId === post.id ? '🗑 Deleting...' : '🗑 Delete'}
+                      🗑 Delete
                     </button>
                   </div>
                 </div>

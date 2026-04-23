@@ -60,7 +60,7 @@ export const validateCollectionQuery = (req: Request, res: Response, next: NextF
   }
 
   if (status !== undefined) {
-    const validStatuses = ['pending', 'approved', 'scheduled', 'completed', 'confirmed'];
+    const validStatuses = ['pending', 'approved', 'scheduled', 'pickup_confirmed', 'materials_accepted'];
     if (!validStatuses.includes(status as string)) {
       errors.push(`Status must be one of: ${validStatuses.join(', ')}`);
     }

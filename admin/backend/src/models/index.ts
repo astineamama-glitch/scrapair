@@ -49,6 +49,10 @@ const Report = require('./Report')(sequelize);
 const UserRating = require('./UserRating')(sequelize);
 const PostRating = require('./PostRating')(sequelize);
 const SystemLog = require('./SystemLog')(sequelize);
+const Feedback = require('./Feedback')(sequelize);
+const Collection = require('./Collection')(sequelize);
+const RatingDeductionRule = require('./RatingDeductionRule')(sequelize);
+const RatingHistory = require('./RatingHistory')(sequelize);
 
 (sequelize as any).models = {
   User,
@@ -58,7 +62,11 @@ const SystemLog = require('./SystemLog')(sequelize);
   Report,
   UserRating,
   PostRating,
-  SystemLog
+  SystemLog,
+  Feedback,
+  Collection,
+  RatingDeductionRule,
+  RatingHistory
 };
 
 const models: any = {
@@ -69,7 +77,11 @@ const models: any = {
   Report,
   UserRating,
   PostRating,
-  SystemLog
+  SystemLog,
+  Feedback,
+  Collection,
+  RatingDeductionRule,
+  RatingHistory
 };
 
 Object.keys(models).forEach((key) => {
@@ -87,6 +99,6 @@ if (process.env.NODE_ENV === 'development') {
 } else {
 }
 
-export { sequelize, User, Material, AdminUser, WasteCategory, Report, UserRating, PostRating, SystemLog };
+export { sequelize, User, Material, AdminUser, WasteCategory, Report, UserRating, PostRating, SystemLog, Feedback, Collection, RatingDeductionRule, RatingHistory };
 export default models;
 

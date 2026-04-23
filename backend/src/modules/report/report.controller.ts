@@ -42,18 +42,18 @@ export const submitReport = async (req: Request, res: Response): Promise<any> =>
       description,
       validityScore: validation.validityScore,
       pointsDeducted: validation.pointsDeduction,
-      status: shouldAutoApprove(reason, validation.validityScore, validation.pointsDeduction) ? 'approved' : 'pending',
+      status: shouldAutoApprove(reason, validation.validityScore, validation.pointsDeduction) ? 'valid_confirmed' : 'pending',
       isValid: validation.isValid && validation.validityScore >= 0.4
     });
 
-    if (report.status === 'approved') {
+    if (report.status === 'valid_confirmed') {
       await processReportApproval(reportedUserId, report.id);
     }
 
     await logReportSubmitted(reporterId !, report.id, req);
 
     res.status(201).json({
-      message: `Report submitted successfully. ${report.status === 'approved' ? 'Auto-approved and processed.' : 'Awaiting admin review.'}`,
+      message: `Report submitted successfully. ${report.status === 'valid_confirmed' ? 'Auto-approved and processed.' : 'Awaiting admin review.'}`,
       data: {
         report: {
           id: report.id,
@@ -148,7 +148,7 @@ export const approveReport = async (req: Request, res: Response): Promise<any> =
       return res.status(400).json({ message: 'Only pending reports can be approved' });
     }
 
-    report.status = 'approved';
+    report.status = 'valid_confirmed';
     report.isValid = true;
     report.approvedBy = adminId;
     report.approvedAt = new Date();
@@ -170,7 +170,7 @@ export const approveReport = async (req: Request, res: Response): Promise<any> =
       data: {
         reportId,
         pointsDeducted: report.pointsDeducted,
-        status: 'approved'
+        status: 'valid_confirmed'
       }
     });
   } catch (error: any) {
@@ -195,7 +195,7 @@ export const rejectReport = async (req: Request, res: Response): Promise<any> =>
       return res.status(400).json({ message: 'Only pending reports can be rejected' });
     }
 
-    report.status = 'rejected';
+    report.status = 'invalid_confirmed';
     report.isValid = false;
     report.approvedBy = adminId;
     report.approvedAt = new Date();
@@ -209,7 +209,7 @@ export const rejectReport = async (req: Request, res: Response): Promise<any> =>
       message: 'Report rejected',
       data: {
         reportId,
-        status: 'rejected',
+        status: 'invalid_confirmed',
         reason: rejectionReason || null
       }
     });

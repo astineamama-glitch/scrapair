@@ -12,7 +12,10 @@
     "db:migrate": "npm run build && sequelize-cli db:migrate",
     "db:migrate:undo": "npm run build && sequelize-cli db:migrate:undo",
     "db:seed": "npm run build && sequelize-cli db:seed:all",
-    "db:seed:undo": "npm run build && sequelize-cli db:seed:undo:all"
+    "db:seed:undo": "npm run build && sequelize-cli db:seed:undo:all",
+    "db:validate-migration": "node scripts/validateStatusMigration.js",
+    "delete:waste:preview": "ts-node scripts/deleteWasteDataBulk.ts --dry-run",
+    "delete:waste:execute": "ts-node scripts/deleteWasteDataBulk.ts --execute"
   },
   "keywords": [],
   "author": "",

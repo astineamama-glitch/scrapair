@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../../shared/context/AuthContext';
+import RatingDisplay from '../../../../components/RatingDisplay';
 import wastePostService from '../../../../services/wastePostService';
 import messageService from '../../../../services/messageService';
 import FeedbackForm from '../../../../components/FeedbackForm';
@@ -109,7 +110,7 @@ const WastePostDetailsPage = () => {
   };
 
   const getStatusBadge = (status) => {
-    if (status === 'in-collection') return { label: '📦 In Collection', color: C.info };
+    if (status === 'reserved') return { label: '📦 In Collection', color: C.info };
     if (status === 'collected') return { label: '✅ Collected', color: C.bright };
     return { label: '✨ Available', color: C.bright };
   };
@@ -196,7 +197,10 @@ const WastePostDetailsPage = () => {
                   {badge.label}
                 </div>
               </div>
-              <p style={{ fontSize: 16, color: C.textMid, margin: 0 }}>Posted by <strong style={{ color: C.bright }}>{post.business?.businessName || 'Business'}</strong></p>
+              <p style={{ fontSize: 16, color: C.textMid, margin: 0 }}>Posted by <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: C.bright }}>
+                <RatingDisplay userId={post.business?.id} variant="inline" />
+                <strong>{post.business?.businessName || 'Business'}</strong>
+              </span></p>
             </div>
 
             {/* Specs Grid */}
@@ -250,8 +254,8 @@ const WastePostDetailsPage = () => {
               <button onClick={handleMessageBusiness} disabled={messageLoading} style={{ padding: '16px 24px', fontSize: 14, fontWeight: 800, borderRadius: 100, border: 'none', background: C.bright, color: '#082800', cursor: messageLoading ? 'not-allowed' : 'pointer', transition: 'all 0.2s', opacity: messageLoading ? 0.6 : 1, boxShadow: '0 0 20px rgba(100,255,67,0.4)' }} onMouseEnter={e => { if (!messageLoading) { e.target.style.boxShadow = '0 0 32px rgba(100,255,67,0.6)'; e.target.style.transform = 'scale(1.02)'; } }} onMouseLeave={e => { if (!messageLoading) { e.target.style.boxShadow = '0 0 20px rgba(100,255,67,0.4)'; e.target.style.transform = 'scale(1)'; } }}>
                 {messageLoading ? '...' : '💬 Message'}
               </button>
-              <button onClick={handleRequestCollection} disabled={post.status === 'in-collection' || post.status === 'collected'} style={{ padding: '16px 24px', fontSize: 14, fontWeight: 800, borderRadius: 100, border: `1px solid ${C.border}`, background: post.status === 'in-collection' || post.status === 'collected' ? 'transparent' : 'transparent', color: post.status === 'in-collection' || post.status === 'collected' ? C.textLow : C.bright, cursor: post.status === 'in-collection' || post.status === 'collected' ? 'not-allowed' : 'pointer', opacity: post.status === 'in-collection' || post.status === 'collected' ? 0.5 : 1, transition: 'all 0.2s' }} onMouseEnter={e => { if (post.status !== 'in-collection' && post.status !== 'collected') { e.target.style.borderColor = C.borderHover; e.target.style.background = 'rgba(100,255,67,0.1)'; } }} onMouseLeave={e => { e.target.style.borderColor = C.border; e.target.style.background = 'transparent'; }}>
-                {post.status === 'in-collection' ? '📦 In Progress' : post.status === 'collected' ? '✅ Collected' : '🚚 Request'}
+              <button onClick={handleRequestCollection} disabled={post.status === 'reserved' || post.status === 'collected'} style={{ padding: '16px 24px', fontSize: 14, fontWeight: 800, borderRadius: 100, border: `1px solid ${C.border}`, background: post.status === 'reserved' || post.status === 'collected' ? 'transparent' : 'transparent', color: post.status === 'reserved' || post.status === 'collected' ? C.textLow : C.bright, cursor: post.status === 'reserved' || post.status === 'collected' ? 'not-allowed' : 'pointer', opacity: post.status === 'reserved' || post.status === 'collected' ? 0.5 : 1, transition: 'all 0.2s' }} onMouseEnter={e => { if (post.status !== 'reserved' && post.status !== 'collected') { e.target.style.borderColor = C.borderHover; e.target.style.background = 'rgba(100,255,67,0.1)'; } }} onMouseLeave={e => { e.target.style.borderColor = C.border; e.target.style.background = 'transparent'; }}>
+                {post.status === 'reserved' ? '📦 In Progress' : post.status === 'collected' ? '✅ Collected' : '🚚 Request'}
               </button>
             </div>
           </div>

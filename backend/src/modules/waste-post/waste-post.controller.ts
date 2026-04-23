@@ -186,6 +186,14 @@ export const updateWastePost = async (req: Request, res: Response): Promise<any>
       return res.status(403).json({ error: 'Not authorized to update this post' });
     }
 
+    // Check if post has been collected
+    if (post.status === 'collected' || ['PICKED_UP', 'COMPLETED'].includes(post.collectionStatus as string)) {
+      return res.status(400).json({ 
+        error: 'Cannot edit this waste post',
+        message: 'This post has been collected and cannot be edited'
+      });
+    }
+
     await post.update(updates);
     const baseUrl = getRequestBaseUrl(req);
 
@@ -211,6 +219,14 @@ export const deleteWastePost = async (req: Request, res: Response): Promise<any>
 
     if (post.businessId !== userId) {
       return res.status(403).json({ error: 'Not authorized to delete this post' });
+    }
+
+    // Check if post has been collected
+    if (post.status === 'collected' || ['PICKED_UP', 'COMPLETED'].includes(post.collectionStatus as string)) {
+      return res.status(400).json({ 
+        error: 'Cannot delete this waste post',
+        message: 'This post has been collected and cannot be deleted'
+      });
     }
 
     await post.destroy();

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { COLORS, FONTS } from '../../../../shared/styles/colors';
 import { useWindowScroll } from '../../../../shared/hooks/useWindowScroll';
 import wastePostService from '../../../../services/wastePostService';
+import collectionService from '../../../../services/collectionService';
 import messageService from '../../../../services/messageService';
 import Navbar from '../../../../shared/components/Navbar';
 import FilterPanel from '../../../../shared/components/FilterPanel';
@@ -14,6 +15,7 @@ const RecyclerDashboard = () => {
   const navigate = useNavigate();
   const scrollY = useWindowScroll();
   const [materials, setMaterials] = useState([]);
+  const [filteredMaterials, setFilteredMaterials] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -43,13 +45,9 @@ const RecyclerDashboard = () => {
     try {
       setLoading(true);
       setError('');
-      const response = await wastePostService.getMarketplace({
-        wasteType: filters.wasteType,
-        city: filters.city,
-        searchQuery: filters.searchQuery,
-      });
+      const response = await collectionService.getAvailablePosts();
       // Backend returns { message, pagination, data: [...materials] }
-      const materialsArray = Array.isArray(response.data) ? response.data : response.data?.data || [];
+      const materialsArray = Array.isArray(response.data) ? response.data : response.data?.data || response || [];
       setMaterials(materialsArray);
     } catch (err) {
       setError(err.message || 'Failed to load materials');
@@ -57,13 +55,44 @@ const RecyclerDashboard = () => {
     } finally {
       setLoading(false);
     }
-  }, [filters]);
+  }, []);
 
   // Initial fetch on component mount only. Filters must not auto-apply via useEffect.
   // User must click "Apply Filters" button to trigger new searches.
   useEffect(() => {
     fetchMaterials();
   }, []); // Empty dependency array - only runs once on mount
+
+  const applyFilters = () => {
+    let filtered = materials;
+
+    if (filters.wasteType) {
+      filtered = filtered.filter((m) => 
+        m.wasteType?.toLowerCase() === filters.wasteType.toLowerCase()
+      );
+    }
+
+    if (filters.city) {
+      filtered = filtered.filter((m) => 
+        m.city?.toLowerCase().includes(filters.city.toLowerCase())
+      );
+    }
+
+    if (filters.searchQuery) {
+      const query = filters.searchQuery.toLowerCase();
+      filtered = filtered.filter((m) =>
+        m.title?.toLowerCase().includes(query) ||
+        m.description?.toLowerCase().includes(query)
+      );
+    }
+
+    setFilteredMaterials(filtered);
+  };
+
+  // Apply filters when materials or filters change
+  useEffect(() => {
+    applyFilters();
+  }, [materials, filters]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -102,6 +131,8 @@ const RecyclerDashboard = () => {
     { icon: '🔔', title: 'Notifications', desc: 'View collection updates and alerts', route: '/notifications' },
     { icon: '✓', title: 'Approved Collections', desc: 'Manage your approved pickups', route: '/recycler/approved-collections' },
     { icon: '📦', title: 'My Collections', desc: 'Track all your collection requests', route: '/collections' },
+      { icon: '??', title: 'Transaction History', desc: 'View your transaction history', route: '/recycler/transaction-history' },
+
   ];
 
   return (
@@ -199,7 +230,7 @@ const RecyclerDashboard = () => {
             <div style={{ textAlign: 'center', padding: '60px 20px' }}>
               <div style={{ fontSize: 16, color: COLORS.textMid }}>Loading materials...</div>
             </div>
-          ) : materials.length === 0 ? (
+          ) : filteredMaterials.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '60px 20px', background: COLORS.surface, borderRadius: 24, border: `1px solid ${COLORS.border}` }}>
               <div style={{ fontSize: 48, marginBottom: 12 }}>📭</div>
               <p style={{ fontSize: 16, color: COLORS.textMid }}>No waste materials available at the moment.</p>
@@ -208,8 +239,8 @@ const RecyclerDashboard = () => {
           ) : (
             <>
               {(() => {
-                const activeMaterials = materials.filter((m) => m.status === 'active');
-                const inCollectionMaterials = materials.filter((m) => m.status === 'in-collection');
+                const activeMaterials = filteredMaterials.filter((m) => m.status === 'active');
+                const inCollectionMaterials = filteredMaterials.filter((m) => m.status === 'reserved');
 
                 return (
                   <>

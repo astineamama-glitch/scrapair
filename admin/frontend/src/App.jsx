@@ -9,6 +9,7 @@ import AdminUsersPage from './UI/users/pages/AdminUsersPage';
 import AdminUserDetailsPage from './UI/users/pages/AdminUserDetailsPage';
 import AdminRatingsPage from './UI/ratings/pages/AdminRatingsPage';
 import AdminReportsPage from './UI/reports/pages/AdminReportsPage';
+import AdminFeedbackPage from './UI/feedback/pages/AdminFeedbackPage';
 import AdminSystemLogsPage from './UI/monitoring/pages/AdminSystemLogsPage';
 import AdminCategoriesPage from './UI/categories/pages/AdminCategoriesPage';
 
@@ -74,6 +75,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <AdminReportsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/feedback"
+            element={
+              <ProtectedRoute>
+                <AdminFeedbackPage />
               </ProtectedRoute>
             }
           />

@@ -33,7 +33,8 @@ import {
   MyPostsPage,
   ManageCollectionRequestsPage,
   PendingApprovalsPage,
-  RequestCollectionPage
+  RequestCollectionPage,
+  BusinessTransactionHistoryPage
 } from './UI/business/pages';
 
 // Recycler Pages
@@ -44,7 +45,8 @@ import {
   MarketplacePage,
   ScheduleCollectionPage,
   ApprovedCollectionsPage,
-  CollectionsPage
+  CollectionsPage,
+  RecyclerTransactionHistoryPage
 } from './UI/recycler/pages';
 
 // MUI Theme Configuration (Consistent across all pages)
@@ -187,6 +189,15 @@ const AppContent = () => {
         path="/collection/:collectionId" 
         element={<CollectionDetailPage />}
       />
+
+      <Route 
+        path="/recycler/collection/:collectionId/:transactionCode" 
+        element={<CollectionDetailPage />}
+      />
+      <Route 
+        path="/business/collection/:collectionId/:transactionCode" 
+        element={<CollectionDetailPage />}
+      />
       
       {/* Messaging Routes (Phase 3) */}
       <Route path="/messages" element={<MessagesPage />} />
@@ -218,6 +229,16 @@ const AppContent = () => {
           </ProtectedRoute>
         } 
       />
+
+      {/* Recycler Transaction History */}
+      <Route 
+        path="/recycler/transaction-history" 
+        element={
+          <ProtectedRoute requiredRole="recycler">
+            <RecyclerTransactionHistoryPage />
+          </ProtectedRoute>
+        } 
+      />
       
       {/* Business Pending Approvals */}
       <Route 
@@ -235,6 +256,16 @@ const AppContent = () => {
         element={
           <ProtectedRoute requiredRole="business">
             <ManageCollectionRequestsPage />
+          </ProtectedRoute>
+        } 
+      />
+
+      {/* Business Transaction History */}
+      <Route 
+        path="/business/transaction-history" 
+        element={
+          <ProtectedRoute requiredRole="business">
+            <BusinessTransactionHistoryPage />
           </ProtectedRoute>
         } 
       />

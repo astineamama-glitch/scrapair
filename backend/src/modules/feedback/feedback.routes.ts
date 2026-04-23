@@ -7,6 +7,7 @@ const router = express.Router();
 router.use(authenticateUser);
 
 router.post('/', RateLimiter.middleware('createFeedback'), feedbackController.submitFeedback);
+router.get('/collection/:collectionId/status', feedbackController.getCollectionFeedbackStatus);
 router.get('/user/:userId', feedbackController.getUserFeedback);
 router.get('/post/:postId', feedbackController.getPostFeedback);
 

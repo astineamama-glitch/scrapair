@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../../shared/context/AuthContext';
-import wastePostService from '../../../../services/wastePostService';
+import collectionService from '../../../../services/collectionService';
 import messageService from '../../../../services/messageService';
 
 const MarketplacePage = () => {
@@ -43,10 +43,10 @@ const MarketplacePage = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await wastePostService.getMarketplace();
+      const response = await collectionService.getAvailablePosts();
       // Backend returns { message, pagination, data: [...posts] }
       // Extract the actual posts array from the response
-      const postsArray = Array.isArray(response.data) ? response.data : response.data?.data || [];
+      const postsArray = Array.isArray(response.data) ? response.data : response.data?.data || response || [];
       setPosts(postsArray);
     } catch (err) {
       setError(err.message || 'Failed to load marketplace posts.');
@@ -89,7 +89,7 @@ const MarketplacePage = () => {
 
   // Separate posts by status for display
   const activePosts = filteredPosts.filter((post) => post.status === 'active');
-  const inCollectionPosts = filteredPosts.filter((post) => post.status === 'in-collection');
+  const inCollectionPosts = filteredPosts.filter((post) => post.status === 'reserved');
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;

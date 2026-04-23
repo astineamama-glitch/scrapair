@@ -2,11 +2,11 @@ import { DataTypes, Model, Sequelize, ModelStatic } from 'sequelize';
 import bcryptjs from 'bcryptjs';
 
 interface AdminUserAttributes {
-  id?: number;
+  id?: string;
   username: string;
   password: string;
   email?: string;
-  role?: 'super_admin' | 'admin';
+  role?: 'ADMIN' | 'SUPER_ADMIN';
   isActive?: boolean;
   lastLogin?: Date;
   createdAt?: Date;
@@ -22,9 +22,10 @@ module.exports = (sequelize: Sequelize): ModelStatic<AdminUserInstance> => {
     'AdminUser',
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
-        autoIncrement: true
+        allowNull: false
       },
       username: {
         type: DataTypes.STRING(100),
@@ -44,8 +45,8 @@ module.exports = (sequelize: Sequelize): ModelStatic<AdminUserInstance> => {
         }
       },
       role: {
-        type: DataTypes.ENUM('super_admin', 'admin'),
-        defaultValue: 'admin',
+        type: DataTypes.ENUM('ADMIN', 'SUPER_ADMIN'),
+        defaultValue: 'ADMIN',
         comment: 'Admin role level'
       },
       isActive: {

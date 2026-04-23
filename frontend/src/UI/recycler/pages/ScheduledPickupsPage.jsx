@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import RatingDisplay from '../../../components/RatingDisplay';
 
 const C = { bright: '#64ff43', darker: '#0a2e03', surface: '#0d3806', border: 'rgba(100,255,67,0.18)', text: '#e6ffe0', textMid: 'rgba(230,255,224,0.55)' };
 
@@ -36,7 +37,10 @@ const ScheduledPickupsPage = () => {
             <div key={pickup.id} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: 24 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: 16 }}>
                 <div>
-                  <h3 style={{ margin: '0 0 4px', fontSize: 18, fontWeight: 700 }}>{pickup.businessName}</h3>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                    <RatingDisplay userId={pickup.businessId} variant="inline" />
+                    <h3 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>{pickup.businessName}</h3>
+                  </div>
                   <p style={{ margin: '0 0 4px', fontSize: 14, color: C.textMid }}>{pickup.wasteMaterial} • {pickup.quantity}</p>
                   <p style={{ margin: 0, fontSize: 13, color: C.textMid }}>📍 {pickup.location}</p>
                 </div>

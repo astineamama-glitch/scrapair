@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { verifyCredentials, generateToken } from '../../shared/config/jwt';
 import { logAdminLogin } from '../../shared/utils/auditLogger';
+import { AdminUser } from '../../models';
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -20,7 +21,16 @@ const login = async (req: Request, res: Response): Promise<any> => {
       });
     }
 
+    // Get the admin user ID from the database
+    const adminUser = await AdminUser.findOne({ where: { username: username } });
+    if (!adminUser) {
+      return res.status(401).json({
+        error: 'Admin user not found'
+      });
+    }
+
     const token = generateToken({
+      id: adminUser.id,
       username: username,
       role: 'admin',
       loginTime: new Date().toISOString()

@@ -24,7 +24,7 @@ export class ImageService {
         .upload(fileName, compressed, {
           cacheControl: '31536000', 
           upsert: false,
-          contentType: 'image/jpeg' 
+          contentType: 'image/webp' 
         });
 
       if (error) {
@@ -80,15 +80,15 @@ export class ImageService {
     if (!file) {
       return { valid: false, error: 'No file provided' };
     }
-    const allowedMimes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-    if (!allowedMimes.includes(file.mimetype)) {
-      return { valid: false, error: `Invalid MIME type: ${file.mimetype}` };
-    }
+
+    // File size validation (magic bytes detection happens during compression)
     if (file.size > 5 * 1024 * 1024) {
       const sizeMB = (file.size / 1024 / 1024).toFixed(2);
       return { valid: false, error: `File too large: ${sizeMB}MB (max 5MB)` };
     }
 
+    // Note: MIME type validation is handled via magic bytes in middleware
+    // This allows mobile devices to upload with incorrect MIME types
     return { valid: true };
   }
 }

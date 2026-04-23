@@ -93,7 +93,7 @@ export const getUserRating = async (req: Request, res: Response): Promise<any> =
     });
 
     const reportCount = await Report.count({
-      where: { reportedUserId: userId, status: 'approved' }
+      where: { reportedUserId: userId, status: 'valid_confirmed' }
     });
 
     res.status(200).json({

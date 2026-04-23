@@ -38,7 +38,8 @@ const CollectionCard = ({
         return { ...baseStyle, background: 'rgba(134,239,172,0.2)', color: '#86efac' };
       case 'rejected':
         return { ...baseStyle, background: 'rgba(255,107,107,0.2)', color: '#ff6b6b' };
-      case 'completed':
+      case 'pickup_confirmed':
+      case 'materials_accepted':
         return { ...baseStyle, background: 'rgba(100,255,67,0.2)', color: COLORS.bright };
       case 'pending':
       default:

@@ -55,7 +55,7 @@ const generateTransactionCode = (postId: number, recyclerId: number): string => 
   return `COLL-${stamp}-${suffix}`;
 };
 
-const getNotificationTitle = (type: 'request' | 'approved' | 'rejected' | 'cancelled' | 'confirmed') => {
+const getNotificationTitle = (type: 'request' | 'approved' | 'rejected' | 'cancelled' | 'pickup_confirmed' | 'materials_accepted') => {
   switch (type) {
     case 'request':
       return 'New Collection Request';
@@ -65,8 +65,10 @@ const getNotificationTitle = (type: 'request' | 'approved' | 'rejected' | 'cance
       return 'Collection Rejected';
     case 'cancelled':
       return 'Collection Cancelled';
-    case 'confirmed':
+    case 'pickup_confirmed':
       return 'Pickup Confirmed';
+    case 'materials_accepted':
+      return 'Materials Accepted';
     default:
       return 'Collection Update';
   }
@@ -77,12 +79,18 @@ const resetPostCollectionState = async (post: any | null) => {
     return;
   }
 
-  post.collectionStatus = 'ACTIVE';
-  post.approvedRecyclerId = null;
-  post.pickupDeadline = null;
-  post.pickedUpAt = null;
-  post.status = 'active';
-  await post.save();
+  // Fetch the post directly from DB to ensure it's a Sequelize instance
+  const postInstance = await WastePost.findByPk(post.id);
+  if (!postInstance) {
+    return;
+  }
+
+  postInstance.collectionStatus = 'ACTIVE';
+  postInstance.approvedRecyclerId = null;
+  postInstance.pickupDeadline = null;
+  postInstance.pickedUpAt = null;
+  postInstance.status = 'active';
+  await postInstance.save();
 };
 
 export const getAvailablePosts = async (req: Request, res: Response): Promise<any> => {
@@ -231,7 +239,7 @@ export const requestCollection = async (req: Request, res: Response): Promise<an
       return res.status(400).json({ error: 'This waste post has already been collected' });
     }
 
-    if (post.status === 'in-collection' || post.approvedRecyclerId) {
+    if (post.status === 'reserved' || post.approvedRecyclerId) {
       return res.status(400).json({ error: 'This waste post is already reserved for collection' });
     }
 
@@ -324,11 +332,15 @@ export const approveCollection = async (req: Request, res: Response): Promise<an
     await collection.save();
 
     if (post) {
-      post.collectionStatus = 'RESERVED';
-      post.approvedRecyclerId = collection.recyclerId;
-      post.pickupDeadline = pickupDeadline;
-      post.status = 'in-collection';
-      await post.save();
+      // Fetch the post directly from DB to ensure it's a Sequelize instance
+      const postInstance = await WastePost.findByPk(post.id);
+      if (postInstance) {
+        postInstance.collectionStatus = 'APPROVED';
+        postInstance.approvedRecyclerId = collection.recyclerId;
+        postInstance.pickupDeadline = pickupDeadline;
+        postInstance.status = 'reserved';
+        await postInstance.save();
+      }
     }
 
     await Notification.create({
@@ -503,26 +515,30 @@ export const confirmPickup = async (req: Request, res: Response): Promise<any> =
       return res.status(400).json({ error: 'Collection must be approved or scheduled to confirm pickup' });
     }
 
-    collection.status = 'completed';
+    collection.status = 'pickup_confirmed';
     collection.completedAt = new Date();
     collection.confirmedBy = collection.recyclerId === userId ? 'recycler' : 'business';
     await collection.save();
 
     const post = (collection as any).post;
     if (post) {
-      post.collectionStatus = 'PICKED_UP';
-      post.pickedUpAt = new Date();
-      post.status = 'collected';
-      post.approvedRecyclerId = null;
-      post.pickupDeadline = null;
-      await post.save();
+      // Fetch the post directly from DB to ensure it's a Sequelize instance
+      const postInstance = await WastePost.findByPk(post.id);
+      if (postInstance) {
+        postInstance.collectionStatus = 'PICKED_UP';
+        postInstance.pickedUpAt = new Date();
+        postInstance.status = 'collected';
+        postInstance.approvedRecyclerId = null;
+        postInstance.pickupDeadline = null;
+        await postInstance.save();
+      }
     }
 
     const otherUserId = collection.recyclerId === userId ? collection.businessId : collection.recyclerId;
     await Notification.create({
       userId: otherUserId,
       type: 'COLLECTION_REQUEST',
-      title: getNotificationTitle('confirmed'),
+      title: getNotificationTitle('pickup_confirmed'),
       message: `Pickup for "${post?.title || 'the material'}" has been confirmed.`,
       relatedId: collection.id,
       read: false
@@ -563,17 +579,21 @@ export const acceptMaterials = async (req: Request, res: Response): Promise<any>
       return res.status(403).json({ error: 'Only the recycler can accept materials' });
     }
 
-    if (collection.status !== 'completed') {
+    if (collection.status !== 'pickup_confirmed') {
       return res.status(400).json({ error: `Cannot accept materials for a collection with status '${collection.status}'` });
     }
 
-    collection.status = 'confirmed';
+    collection.status = 'materials_accepted';
     await collection.save();
 
     const post = (collection as any).post;
     if (post) {
-      post.collectionStatus = 'COMPLETED';
-      await post.save();
+      // Fetch the post directly from DB to ensure it's a Sequelize instance
+      const postInstance = await WastePost.findByPk(post.id);
+      if (postInstance) {
+        postInstance.collectionStatus = 'COMPLETED';
+        await postInstance.save();
+      }
     }
 
     await Notification.create({

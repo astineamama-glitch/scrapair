@@ -19,3 +19,4 @@ export { default as ScheduleCollectionPage } from '../SchedulingFeature/pages/Sc
 // Collections Feature
 export { default as ApprovedCollectionsPage } from '../CollectionsFeature/pages/ApprovedCollectionsPage';
 export { default as CollectionsPage } from '../CollectionsFeature/pages/CollectionsPage';
+export { default as RecyclerTransactionHistoryPage } from '../CollectionsFeature/pages/RecyclerTransactionHistoryPage';

@@ -37,6 +37,7 @@ if (!process.env.JWT_SECRET && NODE_ENV === 'production') {
 const JWT_EXPIRATION = process.env.JWT_EXPIRATION || '24h';
 
 interface AdminPayload {
+  id?: string;
   username: string;
   role: string;
   loginTime: string;

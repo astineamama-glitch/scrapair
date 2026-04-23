@@ -65,14 +65,21 @@ const AdminSystemLogsPage = () => {
                   {logs.length > 0 ? (
                     logs.map((log) => {
                       let details = {};
-                      try {
-                        details = typeof log.details === 'string' ? JSON.parse(log.details) : log.details;
-                      } catch (e) {
-                        details = { action: log.details };
+                      
+                      // Safely parse details
+                      if (log.details) {
+                        try {
+                          details = typeof log.details === 'string' ? JSON.parse(log.details) : log.details;
+                        } catch (e) {
+                          details = { action: log.details };
+                        }
+                      } else {
+                        details = {};
                       }
                       
                       // Format details for display
                       const formatDetails = () => {
+                        if (!details) return '';
                         const parts = [];
                         if (details.action) parts.push(details.action);
                         if (details.username) parts.push(`User: ${details.username}`);

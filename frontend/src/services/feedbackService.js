@@ -7,7 +7,6 @@ const feedbackService = {
       const response = await apiClient.get(`/feedback/user/${userId}`, {
         params: { page, limit }
       });
-      // Backend returns: { message, data: [...feedbacks], pagination: {...} }
       return response.data?.data || response.data || response;
     } catch (error) {
       const msg = error.response?.data?.message || error.message || 'Failed to fetch user feedback';
@@ -21,10 +20,20 @@ const feedbackService = {
       const response = await apiClient.get(`/feedback/post/${postId}`, {
         params: { page, limit }
       });
-      // Backend returns: { message, data: [...feedbacks], pagination: {...} }
       return response.data?.data || response.data || response;
     } catch (error) {
       const msg = error.response?.data?.message || error.message || 'Failed to fetch post feedback';
+      throw new Error(msg);
+    }
+  },
+
+  // Get collection feedback status and eligibility
+  getCollectionFeedbackStatus: async (collectionId) => {
+    try {
+      const response = await apiClient.get(`/feedback/collection/${collectionId}/status`);
+      return response.data?.data || response.data || response;
+    } catch (error) {
+      const msg = error.response?.data?.message || error.message || 'Failed to fetch collection feedback status';
       throw new Error(msg);
     }
   },
@@ -36,11 +45,9 @@ const feedbackService = {
         collectionId: feedbackData.collectionId,
         toUserId: feedbackData.toUserId,
         rating: feedbackData.rating,
-        comment: feedbackData.comment || '',
-        type: feedbackData.type || 'positive'
+        comment: feedbackData.comment || ''
       };
       const response = await apiClient.post('/feedback', payload);
-      // Backend returns: { message, data: { id, collectionId, fromUserId, toUserId, rating, comment, type, createdAt } }
       return response.data?.data || response.data || response;
     } catch (error) {
       const msg = error.response?.data?.message || error.message || 'Failed to submit feedback';

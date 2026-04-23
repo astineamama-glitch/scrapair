@@ -21,3 +21,4 @@ export { default as PendingApprovalsPage } from '../IncomingRequestsFeature/page
 
 // Outgoing Requests Feature
 export { default as RequestCollectionPage } from '../OutgoingRequestsFeature/pages/RequestCollectionPage';
+export { default as BusinessTransactionHistoryPage } from '../OutgoingRequestsFeature/pages/BusinessTransactionHistoryPage';

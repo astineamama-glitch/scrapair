@@ -19,12 +19,21 @@ router.post(
       const userId = (req as any).user.id;
       const file = (req as any).file;
 
+      console.log(`[IMAGE] Upload request - User: ${userId}, File: ${file?.originalname}, Size: ${file?.size} bytes`);
+
+      if (!file) {
+        res.status(400).json({ error: 'No file provided' });
+        return;
+      }
+
       const validation = ImageService.validateImage(file!);
       if (!validation.valid) {
+        console.warn(`[IMAGE] Validation failed - ${validation.error}`);
         res.status(400).json({ error: validation.error });
         return;
       }
 
+      console.log(`[IMAGE] Starting upload to S3 for user ${userId}`);
       const imageUrl = await ImageService.uploadToS3(
         file!.buffer,
         file!.originalname,
@@ -32,6 +41,7 @@ router.post(
         file!.mimetype
       );
 
+      console.log(`[IMAGE] Upload successful - URL: ${imageUrl}`);
       res.status(200).json({
         message: 'Image uploaded successfully',
         data: {
@@ -43,6 +53,7 @@ router.post(
         }
       });
     } catch (error: any) {
+      console.error('[IMAGE] Upload error:', error);
       res.status(500).json({ error: error?.message || 'Failed to upload image' });
     }
   }

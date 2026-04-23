@@ -57,6 +57,7 @@ export async function checkPickupDeadlines(): Promise<void> {
 
         // Revert post back to ACTIVE
         if (post) {
+          post.status = 'active';
           post.collectionStatus = 'ACTIVE';
           post.approvedRecyclerId = null;
           post.pickupDeadline = null;

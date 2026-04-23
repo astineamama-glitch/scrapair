@@ -1,23 +1,23 @@
 export const API_ENDPOINTS = {
   // Auth
-  AUTH_LOGIN: '/admin/login',
+  AUTH_LOGIN: '/api/admin/login',
 
   // Users
-  USERS_GET_ALL: '/admin/users',
-  USERS_GET_BY_ID: (id) => `/admin/users/${id}`,
-  USERS_VERIFY: (id) => `/admin/users/${id}/verify`,
-  USERS_DELETE: (id) => `/admin/users/${id}`,
+  USERS_GET_ALL: '/api/admin/users',
+  USERS_GET_BY_ID: (id) => `/api/admin/users/${id}`,
+  USERS_VERIFY: (id) => `/api/admin/users/${id}/verify`,
+  USERS_DELETE: (id) => `/api/admin/users/${id}`,
 
   // Ratings
-  RATINGS_USERS: '/admin/ratings/users',
-  RATINGS_POSTS: '/admin/ratings/posts',
+  RATINGS_USERS: '/api/admin/ratings/users',
+  RATINGS_POSTS: '/api/admin/ratings/posts',
 
   // Reports
-  REPORTS_GET_ALL: '/admin/reports',
+  REPORTS_GET_ALL: '/api/admin/reports',
 
   // Monitoring
-  MONITORING_LOGS: '/admin/logs',
+  MONITORING_LOGS: '/api/admin/logs',
 
   // Dashboard
-  DASHBOARD_STATISTICS: '/admin/statistics'
+  DASHBOARD_STATISTICS: '/api/admin/statistics'
 };

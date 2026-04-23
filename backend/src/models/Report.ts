@@ -11,7 +11,7 @@ interface ReportAttributes {
   isValid?: boolean;
   validityScore?: number; 
   pointsDeducted?: number; 
-  status: 'pending' | 'approved' | 'rejected';
+  status: 'pending' | 'under_review' | 'valid_confirmed' | 'invalid_confirmed' | 'escalated';
   approvedBy?: number; 
   approvedAt?: Date;
   rejectionReason?: string;
@@ -104,7 +104,7 @@ module.exports = (sequelize: Sequelize): ModelStatic<ReportInstance> => {
         comment: 'Rating points deducted (0.2-0.5)'
       },
       status: {
-        type: DataTypes.ENUM('pending', 'approved', 'rejected'),
+        type: DataTypes.ENUM('pending', 'under_review', 'valid_confirmed', 'invalid_confirmed', 'escalated'),
         allowNull: false,
         defaultValue: 'pending',
         comment: 'Status of the report'

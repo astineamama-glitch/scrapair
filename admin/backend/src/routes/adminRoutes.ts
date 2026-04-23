@@ -6,6 +6,8 @@ import materialsRoutes from '../modules/materials/materials.routes';
 import categoriesRoutes from '../modules/categories/categories.routes';
 import ratingsRoutes from '../modules/ratings/ratings.routes';
 import reportsRoutes from '../modules/reports/reports.routes';
+import feedbackRoutes from '../modules/feedback/feedback.routes';
+import maintenanceRoutes from '../modules/maintenance/maintenance.routes';
 import { getSystemLogs, clearSystemLogs } from '../modules/monitoring/monitoring.controller';
 import authRoutes from '../modules/auth/auth.routes';
 
@@ -16,6 +18,8 @@ router.use('/users', usersRoutes);
 router.use('/categories', categoriesRoutes);
 router.use('/ratings', ratingsRoutes);
 router.use('/reports', reportsRoutes);
+router.use('/feedback', feedbackRoutes);
+router.use('/maintenance', maintenanceRoutes);
 router.get('/logs', authenticate, getSystemLogs);
 router.delete('/logs', authenticate, clearSystemLogs);
 router.get('/statistics', authenticate, adminController.getStatistics);

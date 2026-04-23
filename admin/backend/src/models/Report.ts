@@ -11,7 +11,9 @@ interface ReportAttributes {
   isValid?: boolean;
   validityScore?: number; 
   pointsDeducted?: number; 
-  status: 'pending' | 'approved' | 'rejected';
+  status: 'pending' | 'under_review' | 'valid_confirmed' | 'invalid_confirmed' | 'escalated';
+  severity?: 'low' | 'medium' | 'high' | 'critical';
+  adminNotes?: string;
   approvedBy?: number; 
   approvedAt?: Date;
   rejectionReason?: string;
@@ -104,18 +106,29 @@ module.exports = (sequelize: Sequelize): ModelStatic<ReportInstance> => {
         comment: 'Rating points deducted (0.2-0.5)'
       },
       status: {
-        type: DataTypes.ENUM('pending', 'approved', 'rejected'),
+        type: DataTypes.ENUM('pending', 'under_review', 'valid_confirmed', 'invalid_confirmed', 'escalated'),
         allowNull: false,
         defaultValue: 'pending',
         comment: 'Status of the report'
       },
+      severity: {
+        type: DataTypes.ENUM('low', 'medium', 'high', 'critical'),
+        allowNull: true,
+        comment: 'Severity level determined from reason'
+      },
+      adminNotes: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+        comment: 'Admin comments during review and confirmation'
+      },
       approvedBy: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: true,
         references: {
-          model: 'users',
+          model: 'admin_users',
           key: 'id'
         },
+        onDelete: 'SET NULL',
         comment: 'Admin who approved/rejected'
       },
       approvedAt: {

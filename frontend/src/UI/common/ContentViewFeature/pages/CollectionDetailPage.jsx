@@ -4,7 +4,8 @@ import { useAuth } from '../../../../shared/context/AuthContext';
 import collectionService from '../../../../services/collectionService';
 import messageService from '../../../../services/messageService';
 import FeedbackForm from '../../../../components/FeedbackForm';
-import RatingDisplay from '../../../../components/RatingDisplay';
+import FeedbackStatusDisplay from '../../../../components/FeedbackStatusDisplay';
+import ReportForm from '../../../../components/ReportForm';
 import { formatManila, formatManilaInput } from '../../../../utils/manilaTimeFormatter';
 
 const formatTimestamp = (value) => {
@@ -31,8 +32,8 @@ const getStatusColors = (status) => {
       return { background: '#d1ecf1', color: '#0c5460' };
     case 'scheduled':
       return { background: '#cfe2ff', color: '#084298' };
-    case 'completed':
-    case 'confirmed':
+    case 'pickup_confirmed':
+    case 'materials_accepted':
       return { background: '#d4edda', color: '#155724' };
     case 'cancelled':
     case 'rejected':
@@ -281,7 +282,6 @@ const CollectionDetailPage = () => {
           {collection.recycler && (
             <div style={{ ...sectionStyle, backgroundColor: '#e3f2fd', border: '1px solid #90caf9' }}>
               <h3 style={{ margin: '0 0 15px 0' }}>Recycler Information</h3>
-              <p style={{ margin: '8px 0' }}><strong>Name:</strong> {collection.recycler.companyName || collection.recycler.businessName || 'N/A'}</p>
               <p style={{ margin: '8px 0' }}><strong>Email:</strong> {collection.recycler.email || 'N/A'}</p>
               {collection.recycler.phone ? <p style={{ margin: '8px 0' }}><strong>Phone:</strong> {collection.recycler.phone}</p> : null}
             </div>
@@ -290,7 +290,6 @@ const CollectionDetailPage = () => {
           {collection.business && (
             <div style={{ ...sectionStyle, backgroundColor: '#f0f8ff', border: '1px solid #add8e6' }}>
               <h3 style={{ margin: '0 0 15px 0' }}>Business Information</h3>
-              <p style={{ margin: '8px 0' }}><strong>Name:</strong> {collection.business.businessName || collection.business.companyName || 'N/A'}</p>
               <p style={{ margin: '8px 0' }}><strong>Email:</strong> {collection.business.email || 'N/A'}</p>
               {collection.business.phone ? <p style={{ margin: '8px 0' }}><strong>Phone:</strong> {collection.business.phone}</p> : null}
             </div>
@@ -387,7 +386,7 @@ const CollectionDetailPage = () => {
           </button>
         )}
 
-        {user?.type === 'recycler' && collection.status === 'completed' && (
+        {user?.type === 'recycler' && collection.status === 'pickup_confirmed' && (
           <button
             onClick={handleAcceptMaterials}
             disabled={actionLoading}
@@ -452,31 +451,33 @@ const CollectionDetailPage = () => {
         </p>
       </div>
 
-      {collection && (
+
+      {/* New Feedback Section - Enhanced */}
+      {(collection.status === 'pickup_confirmed' || collection.status === 'materials_accepted') && (
         <div style={{ marginTop: '30px' }}>
-          <h3>Ratings and Feedback</h3>
-          {collection.business && (
-            <div style={{ marginBottom: '20px' }}>
-              <h4>Business Rating</h4>
-              <RatingDisplay userId={collection.business.id} type="user" />
-            </div>
-          )}
-          {collection.recycler && (
-            <div style={{ marginBottom: '20px' }}>
-              <h4>Recycler Rating</h4>
-              <RatingDisplay userId={collection.recycler.id} type="user" />
-            </div>
-          )}
+          <h3>Collection Feedback</h3>
+          <FeedbackStatusDisplay
+            collectionId={collection.id}
+            collection={collection}
+            currentUserType={user?.type}
+            collectionStatus={collection.status}
+            onRefresh={loadCollectionDetails}
+          />
         </div>
       )}
 
-      {collection.status === 'confirmed' && (
+      {/* Report Section - For Completed Collections */}
+      {(collection.status === 'pickup_confirmed' || collection.status === 'materials_accepted') && (
         <div style={{ marginTop: '30px' }}>
-          <h3>Submit Feedback</h3>
-          <FeedbackForm
+          <h3>Report an Issue</h3>
+          <div style={{ backgroundColor: '#fff3cd', padding: '15px', borderRadius: '4px', border: '1px solid #ffecb5', marginBottom: '20px' }}>
+            <p style={{ margin: 0, fontSize: '14px', color: '#856404' }}>
+              <strong>⚠️ Having issues with this transaction?</strong> Submit a report to notify our support team.
+            </p>
+          </div>
+          <ReportForm 
+            reportedUserId={user?.type === 'business' ? collection.recycler?.id : collection.business?.id}
             collectionId={collection.id}
-            business={collection.business}
-            recycler={collection.recycler}
             onSubmitSuccess={loadCollectionDetails}
           />
         </div>

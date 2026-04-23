@@ -7,7 +7,7 @@ interface CollectionAttributes {
   businessId: number;
   requestDate?: string;
   scheduledDate?: string;
-  status?: 'pending' | 'requested' | 'approved' | 'scheduled' | 'completed' | 'confirmed' | 'rejected' | 'cancelled' | 'expired';
+  status?: 'pending' | 'requested' | 'approved' | 'scheduled' | 'pickup_confirmed' | 'materials_accepted' | 'rejected' | 'cancelled' | 'expired';
   confirmedBy?: 'recycler' | 'business';
   completedAt?: Date;
   transactionCode?: string;
@@ -69,7 +69,7 @@ module.exports = (sequelize: Sequelize): ModelStatic<CollectionInstance> => {
         comment: 'ISO string - Date scheduled for the collection'
       },
       status: {
-        type: DataTypes.ENUM('pending', 'requested', 'approved', 'scheduled', 'completed', 'confirmed', 'rejected', 'cancelled', 'expired'),
+        type: DataTypes.ENUM('pending', 'requested', 'approved', 'scheduled', 'pickup_confirmed', 'materials_accepted', 'rejected', 'cancelled', 'expired'),
         allowNull: false,
         defaultValue: 'pending',
         comment: 'Status of the collection request'

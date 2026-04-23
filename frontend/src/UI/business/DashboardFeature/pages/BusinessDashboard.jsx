@@ -20,10 +20,9 @@ const BusinessDashboard = () => {
     { icon: '◈', title: 'Post Waste Materials', desc: 'Create a new waste post to list your recyclable materials on the marketplace.', action: '/waste-post/create', label: 'Create Post' },
     { icon: '◎', title: 'View My Posts', desc: 'View, edit, or manage your posted waste materials.', action: '/business/posts', label: 'View Posts' },
     { icon: '◉', title: 'Collection Requests', desc: 'Manage collection requests from recyclers.', action: '/collections', label: 'View Requests' },
-    { icon: '◐', title: 'New Requests (1-Hour)', desc: 'Approve collection requests with the new 1-hour pickup window.', action: '/business/collection-requests', label: 'Manage Requests' },
+    { icon: '◐', title: 'Transaction History', desc: 'View all your completed pickups and transactions.', action: '/business/transaction-history', label: 'View History' },
     { icon: '◆', title: 'Messages', desc: 'Communicate with recyclers about your materials.', action: '/messages', label: 'Open Messages' },
-    { icon: '★', title: 'Notifications', desc: 'View collection requests and system alerts.', action: '/notifications', label: 'View Alerts' },
-    { icon: '✓', title: 'Pending Approvals', desc: 'Manage approved recyclers and their pickup windows.', action: '/business/pending-approvals', label: 'View Approvals' },
+    { icon: '★', title: 'Pending Approvals', desc: 'Manage approved recyclers and their pickup windows.', action: '/business/pending-approvals', label: 'View Approvals' },
   ];
 
   return (

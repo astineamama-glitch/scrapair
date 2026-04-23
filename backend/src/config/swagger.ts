@@ -62,7 +62,7 @@ const options = {
             id: { type: 'string' },
             wastePostId: { type: 'string' },
             recyclerUserId: { type: 'string' },
-            status: { type: 'string', enum: ['requested', 'approved', 'rejected', 'completed'] },
+            status: { type: 'string', enum: ['pending', 'requested', 'approved', 'scheduled', 'pickup_confirmed', 'materials_accepted', 'rejected', 'cancelled', 'expired'] },
             scheduledDate: { type: 'string', format: 'date-time' },
             createdAt: { type: 'string', format: 'date-time' }
           }
