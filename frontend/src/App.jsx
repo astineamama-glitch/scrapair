@@ -138,7 +138,7 @@ const AppContent = () => {
       
       {/* Waste Post Routes (Phase 1) */}
       <Route 
-        path="/waste-post/create" 
+        path="/business/posts/waste-post/create" 
         element={
           <ProtectedRoute requiredRole="business">
             <CreateWastePostPage />
@@ -146,7 +146,7 @@ const AppContent = () => {
         } 
       />
       <Route 
-        path="/waste-post/edit/:postId" 
+        path="/business/posts/waste-post/edit/:postId" 
         element={
           <ProtectedRoute requiredRole="business">
             <EditWastePostPage />
@@ -154,7 +154,7 @@ const AppContent = () => {
         } 
       />
       <Route 
-        path="/waste-post/:postId" 
+        path="/business/posts/waste-post/:postId" 
         element={<WastePostDetailsPage />}
       />
       <Route 

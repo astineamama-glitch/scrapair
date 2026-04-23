@@ -97,7 +97,7 @@ const MarketplacePage = () => {
   };
 
   const handleViewDetails = (postId) => {
-    navigate(`/waste-post/${postId}`);
+    navigate(`/business/posts/waste-post/${postId}`);
   };
 
   const handleRequestCollection = (postId) => {

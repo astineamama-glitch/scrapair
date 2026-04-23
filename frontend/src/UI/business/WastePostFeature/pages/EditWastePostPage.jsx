@@ -1,5 +1,5 @@
 /* eslint-disable unicode-bom */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../../shared/context/AuthContext';
 import wastePostService from '../../../../services/wastePostService';
@@ -34,11 +34,6 @@ const EditWastePostPage = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  useEffect(() => {
-    fetchCategories();
-    loadPost();
-  }, [postId, loadPost]);
-
   const fetchCategories = async () => {
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
@@ -49,7 +44,7 @@ const EditWastePostPage = () => {
     }
   };
 
-  const loadPost = async () => {
+  const loadPost = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
@@ -76,7 +71,12 @@ const EditWastePostPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [postId]);
+
+  useEffect(() => {
+    fetchCategories();
+    loadPost();
+  }, [postId, loadPost]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

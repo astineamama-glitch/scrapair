@@ -75,11 +75,11 @@ const MyPostsPage = () => {
   };
 
   const handleEdit = (postId) => {
-    navigate(`/waste-post/edit/${postId}`);
+    navigate(`/business/posts/waste-post/edit/${postId}`);
   };
 
   const handleViewDetails = (postId) => {
-    navigate(`/waste-post/${postId}`);
+    navigate(`/business/posts/waste-post/${postId}`);
   };
 
   if (!user) {
@@ -113,7 +113,7 @@ const MyPostsPage = () => {
             <span style={{ fontSize: 21, fontWeight: 800, letterSpacing: '-0.5px', color: C.text }}>ScraPair</span>
           </div>
           <button
-            onClick={() => navigate('/waste-post/create')}
+            onClick={() => navigate('/business/posts/waste-post/create')}
             style={{
               padding: '12px 28px',
               fontSize: 14,
@@ -194,7 +194,7 @@ const MyPostsPage = () => {
               You haven't created any waste posts. Start by listing your first material and connect with recyclers.
             </p>
             <button
-              onClick={() => navigate('/waste-post/create')}
+              onClick={() => navigate('/business/posts/waste-post/create')}
               style={{
                 padding: '16px 40px',
                 fontSize: 16,

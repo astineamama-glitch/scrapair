@@ -37,14 +37,23 @@ const RatingDisplay = ({ userId = null, postId = null, variant = 'compact' }) =>
   }, [userId, postId, token]);
 
   if (loading) {
+    if (variant === 'inline') {
+      return <span className={`rating-display ${variant}`}>Loading...</span>;
+    }
     return <div className={`rating-display ${variant}`}>Loading rating...</div>;
   }
 
   if (error) {
+    if (variant === 'inline') {
+      return <span className={`rating-display ${variant}`}>—</span>;
+    }
     return <div className={`rating-display ${variant}`}>Rating unavailable</div>;
   }
 
   if (!rating) {
+    if (variant === 'inline') {
+      return <span className={`rating-display ${variant}`}>No ratings</span>;
+    }
     return <div className={`rating-display ${variant}`}>No ratings yet</div>;
   }
 
@@ -68,6 +77,15 @@ const RatingDisplay = ({ userId = null, postId = null, variant = 'compact' }) =>
 
     return stars;
   };
+
+  if (variant === 'inline') {
+    return (
+      <span className={`rating-display ${variant}`}>
+        <span className="stars">{renderStars(rating.averageRating)}</span>
+        <span className="value">{rating.averageRating.toFixed(1)}</span>
+      </span>
+    );
+  }
 
   return (
     <div className={`rating-display ${variant}`}>

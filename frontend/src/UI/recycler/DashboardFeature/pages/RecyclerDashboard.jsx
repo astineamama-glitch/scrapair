@@ -318,7 +318,7 @@ const RecyclerDashboard = () => {
                                 {/* Actions */}
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                                   <button
-                                    onClick={() => navigate(`/waste-post/${material.id}`)}
+                                    onClick={() => navigate(`/business/posts/waste-post/${material.id}`)}
                                     style={{
                                       padding: '10px 16px',
                                       background: 'transparent',
