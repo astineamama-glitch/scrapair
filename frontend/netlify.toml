@@ -1,0 +1,15 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+
+[build.environment]
+  NODE_VERSION = "18"
+  DISABLE_ESLINT_PLUGIN = "true"
+  REACT_APP_API_URL = "https://onetwothree-scrapair.onrender.com/api"
+  REACT_APP_SOCKET_URL = "https://onetwothree-scrapair.onrender.com"
+  REACT_APP_ENV = "production"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
